@@ -1,5 +1,7 @@
 package com.ezt.bankapp.account;
 
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +11,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 
-@NamedQuery(name = "Account.findByHolderName", query = "select a from Account a where a.holderName=:holderName")
-
+@NamedQuery(name = "Account.findByHolderName",    query = "select a from Account a where a.holderName=:holderName")
+@NamedQuery(name = "Account.findByAccountNumber", query = "select a from Account a where a.accountNo=:accountNo")
 
 @Entity
 @Table
@@ -22,6 +24,9 @@ public class Account {
 	private String holderName;
 	@Column	
 	private Double balance;
+	@Column(name="is_active")
+	private boolean active = true;
+	
 	
 	public Account() {		
 	}
@@ -48,6 +53,14 @@ public class Account {
 		this.holderName = accountFolderName;
 	}
 
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
 	public Double getBalance() {
 		return balance;
 	}
@@ -58,8 +71,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [accountNo=" + accountNo + ", accountFolderName=" + holderName + ", accountBalance="
-				+ balance + "]";
+		return "accountNo: " + getAccountNo() + ", holderName: " + getHolderName() + ", balance: " + getBalance() + ", active: " + active;
 	}
 	
 }

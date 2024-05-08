@@ -9,13 +9,17 @@ public interface AccountService {
 
 	public ResponseEntity<String> createAccount(Account account);	
 	
-	public Account getAccountDetails(Long accountNumber);	
+	public Account getAccountDetailsByAccountNumber(Long accountNumber);
+	
+	public Account getAccountDetailsById(Long id);
 	
 	public List<Account> getAllAccountDetails();
 	
-	public Account depositeAmount(Long accountNumber, Double money);
+	public ResponseEntity<String> depositMoney(Long accountNumber, Double money);
 	
-	public Account withdrawAmount(Long accountNumber, Double money);
+	public ResponseEntity<String> withdrawMoney(Long accountNumber, Double money);
 	
-	public void closeAccount(Long accountNumber);
+	public ResponseEntity<String> closeAccount(Long accountNumber);
+	
+	public ResponseEntity<String> deleteAccount(Long accountNumber);
 }
