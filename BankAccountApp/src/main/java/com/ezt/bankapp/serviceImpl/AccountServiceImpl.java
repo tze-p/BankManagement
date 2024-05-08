@@ -13,6 +13,8 @@ import com.ezt.bankapp.account.Account;
 import com.ezt.bankapp.repo_dao.AccountDao;
 import com.ezt.bankapp.service.AccountService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 // Must add @Service else will get following error ...: 
 // ...Field service in com.ezt.bankapp.restImpl.AccountControllerImpl required a bean of type 'com.ezt.bankapp.service.AccountService' that could not be found.
@@ -33,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
 			Account acc = repo.findByHolderName(account.getHolderName());
 			if (!Objects.isNull(acc)) {
 				return new ResponseEntity<String>(
-						"\"" + String.format("annot create account - account already exists: [%s]\n", acc.toString()) + "\" }",
+						"\"" + String.format("Cannot create account - account already exists\n[%s]\n", acc.toString()) + "\" }",
 						HttpStatus.BAD_REQUEST);
 
 			} else {
@@ -170,21 +172,22 @@ public class AccountServiceImpl implements AccountService {
 	 * DELETE: localhost:8082/account/delete/2
 	 */
 	@Override
-	public ResponseEntity<String> deleteAccount(Long accountNumber) {
-		Account acc = repo.findByAccountNumber(accountNumber);
-		if (Objects.isNull(acc)) {
+	public ResponseEntity<String> deleteAccount(Long id) {
+		Optional<Account> tmpAcc = repo.findById(id);
+		if (tmpAcc.isEmpty()) {
 			return new ResponseEntity<String>(
-					"\"" + String.format("Cannot delete - account [%s] does not exists\n", accountNumber) + "\" }",
+					"\"" + String.format("Cannot delete - account [%s] does not exists\n", id) + "\" }",
 					HttpStatus.BAD_REQUEST);
 		}
+		Account acc = tmpAcc.get(); // now get the account
 		if (acc.isActive()) {
 			return new ResponseEntity<String>(
-					"\"" + String.format("Cannot delete - account [%s] is still active\n[%s]", accountNumber, acc.toString()) + "\" }",
+					"\"" + String.format("Cannot delete - account [%s] is still active\n[%s]", id, acc.toString()) + "\" }",
 					HttpStatus.BAD_REQUEST);
 		}
 		repo.delete(acc);
 		return new ResponseEntity<String>(
-				"\"" + String.format("Account [%s] successfully deleted\n", accountNumber) + "\" }",
+				"\"" + String.format("Account [%s] successfully deleted\n", id) + "\" }",
 				HttpStatus.OK);				
 	}
 	

@@ -11,8 +11,16 @@ import com.ezt.bankapp.repo_dao.AccountDao;
 import com.ezt.bankapp.rest_controller.AccountController;
 import com.ezt.bankapp.service.AccountService;
 
-// must add @RestController or will get 404 "Not found"
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+/* [Notes]
+ * 1. must add @RestController or will get 404 "Not found"
+ * 2. @Tag() - modifies the label shown in OpenAPI definition page, replaces "Account-Controller-Impl"
+ */
+
 @RestController
+@Tag(name = "Account Controller CRUD API", description="Created by Tze Poon")
 public class AccountControllerImpl implements AccountController {
 
 	@Autowired
